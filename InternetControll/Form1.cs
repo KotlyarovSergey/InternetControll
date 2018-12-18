@@ -71,7 +71,7 @@ namespace InternetControll
                 changePingStatusOK(false);
         }
 
-
+    
         private void changePingStatusOK(bool isOK)
         {
             if (isOK) // we need write: OK
