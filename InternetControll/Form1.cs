@@ -28,9 +28,10 @@ namespace InternetControll
                 btnStart.Text = "START";
                 lblPingLabel.Visible = false;
                 lblPing.Visible = false;
+                notifyIcon1.Visible = false;
                 // pinger stop
                 //pinger(false);
-                
+
             }
             else // to RUN
             {
@@ -41,8 +42,9 @@ namespace InternetControll
                 // pinger run
                 pinger(true);
                 timerOfPing.Start();
+                notifyIcon1.Visible = true;
             }
-            
+
             groupBox2.Enabled = !groupBox2.Enabled;
             // change status
             isRunning = !isRunning;
@@ -71,15 +73,15 @@ namespace InternetControll
                 changePingStatusOK(false);
         }
 
-    
         private void changePingStatusOK(bool isOK)
         {
             if (isOK) // we need write: OK
             {
-                if (lblPing.Text.CompareTo("OK")!=0) // iw now not OK
+                if (lblPing.Text.CompareTo("OK") != 0) // iw now not OK
                 {
                     lblPing.Text = "OK";
                     lblPing.ForeColor = System.Drawing.Color.Green;
+                    notifyIcon1.Icon = Properties.Resources.pingok;
                 }
             }
             else // we need write: lost
@@ -87,7 +89,8 @@ namespace InternetControll
                 if (lblPing.Text.CompareTo("Lost") != 0) // iw now not OK
                 {
                     lblPing.Text = "Lost";
-                    lblPing.ForeColor = System.Drawing.Color.Red; 
+                    lblPing.ForeColor = System.Drawing.Color.Red;
+                    notifyIcon1.Icon = Properties.Resources.pinglost;
                 }
             }
         }
@@ -95,6 +98,23 @@ namespace InternetControll
         private void timerOfPing_Tick(object sender, EventArgs e)
         {
             pinger(true);
+        }
+
+        private void Form1_Resize(object sender, EventArgs e)
+        {
+            if (isRunning && WindowState == FormWindowState.Minimized)
+            {
+                this.Hide();
+            }
+        }
+
+        private void notifyIcon1_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (WindowState == FormWindowState.Minimized)
+            {
+                this.Show();
+                WindowState = FormWindowState.Normal;
+            }
         }
     }
 }
