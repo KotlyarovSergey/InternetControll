@@ -29,28 +29,26 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.lblDNS = new System.Windows.Forms.Label();
-            this.lblGatWay = new System.Windows.Forms.Label();
-            this.lblMask = new System.Windows.Forms.Label();
-            this.lblIP = new System.Windows.Forms.Label();
             this.lblInterface = new System.Windows.Forms.Label();
+            this.lblIP = new System.Windows.Forms.Label();
+            this.lblMask = new System.Windows.Forms.Label();
+            this.lblGatWay = new System.Windows.Forms.Label();
+            this.lblDNS = new System.Windows.Forms.Label();
             this.btnGetStatus = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.checkBoxPingGateWay = new System.Windows.Forms.CheckBox();
-            this.txbFrequence = new System.Windows.Forms.TextBox();
-            this.txbPingSite = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.txbPingSite = new System.Windows.Forms.TextBox();
+            this.txbFrequence = new System.Windows.Forms.TextBox();
             this.btnStart = new System.Windows.Forms.Button();
+            this.checkBoxPingGateWay = new System.Windows.Forms.CheckBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.lblPingLabel = new System.Windows.Forms.Label();
             this.lblPing = new System.Windows.Forms.Label();
             this.timerOfPing = new System.Windows.Forms.Timer(this.components);
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
-            this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.statusStrip1.SuspendLayout();
@@ -70,32 +68,14 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Status";
             // 
-            // lblDNS
+            // lblInterface
             // 
-            this.lblDNS.AutoSize = true;
-            this.lblDNS.Location = new System.Drawing.Point(23, 137);
-            this.lblDNS.Name = "lblDNS";
-            this.lblDNS.Size = new System.Drawing.Size(33, 13);
-            this.lblDNS.TabIndex = 4;
-            this.lblDNS.Text = "DNS:";
-            // 
-            // lblGatWay
-            // 
-            this.lblGatWay.AutoSize = true;
-            this.lblGatWay.Location = new System.Drawing.Point(23, 114);
-            this.lblGatWay.Name = "lblGatWay";
-            this.lblGatWay.Size = new System.Drawing.Size(55, 13);
-            this.lblGatWay.TabIndex = 3;
-            this.lblGatWay.Text = "GeteWay:";
-            // 
-            // lblMask
-            // 
-            this.lblMask.AutoSize = true;
-            this.lblMask.Location = new System.Drawing.Point(23, 91);
-            this.lblMask.Name = "lblMask";
-            this.lblMask.Size = new System.Drawing.Size(36, 13);
-            this.lblMask.TabIndex = 2;
-            this.lblMask.Text = "Mask:";
+            this.lblInterface.AutoSize = true;
+            this.lblInterface.Location = new System.Drawing.Point(23, 35);
+            this.lblInterface.Name = "lblInterface";
+            this.lblInterface.Size = new System.Drawing.Size(52, 13);
+            this.lblInterface.TabIndex = 0;
+            this.lblInterface.Text = "Interface:";
             // 
             // lblIP
             // 
@@ -106,14 +86,32 @@
             this.lblIP.TabIndex = 1;
             this.lblIP.Text = "IP:";
             // 
-            // lblInterface
+            // lblMask
             // 
-            this.lblInterface.AutoSize = true;
-            this.lblInterface.Location = new System.Drawing.Point(23, 35);
-            this.lblInterface.Name = "lblInterface";
-            this.lblInterface.Size = new System.Drawing.Size(52, 13);
-            this.lblInterface.TabIndex = 0;
-            this.lblInterface.Text = "Interface:";
+            this.lblMask.AutoSize = true;
+            this.lblMask.Location = new System.Drawing.Point(23, 91);
+            this.lblMask.Name = "lblMask";
+            this.lblMask.Size = new System.Drawing.Size(36, 13);
+            this.lblMask.TabIndex = 2;
+            this.lblMask.Text = "Mask:";
+            // 
+            // lblGatWay
+            // 
+            this.lblGatWay.AutoSize = true;
+            this.lblGatWay.Location = new System.Drawing.Point(23, 114);
+            this.lblGatWay.Name = "lblGatWay";
+            this.lblGatWay.Size = new System.Drawing.Size(55, 13);
+            this.lblGatWay.TabIndex = 3;
+            this.lblGatWay.Text = "GeteWay:";
+            // 
+            // lblDNS
+            // 
+            this.lblDNS.AutoSize = true;
+            this.lblDNS.Location = new System.Drawing.Point(23, 137);
+            this.lblDNS.Name = "lblDNS";
+            this.lblDNS.Size = new System.Drawing.Size(33, 13);
+            this.lblDNS.TabIndex = 4;
+            this.lblDNS.Text = "DNS:";
             // 
             // btnGetStatus
             // 
@@ -139,34 +137,14 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Setting";
             // 
-            // checkBoxPingGateWay
+            // label1
             // 
-            this.checkBoxPingGateWay.AutoSize = true;
-            this.checkBoxPingGateWay.Checked = true;
-            this.checkBoxPingGateWay.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxPingGateWay.Location = new System.Drawing.Point(23, 87);
-            this.checkBoxPingGateWay.Name = "checkBoxPingGateWay";
-            this.checkBoxPingGateWay.Size = new System.Drawing.Size(94, 17);
-            this.checkBoxPingGateWay.TabIndex = 4;
-            this.checkBoxPingGateWay.Text = "ping GateWay";
-            this.toolTip1.SetToolTip(this.checkBoxPingGateWay, "Check Ping to GateWay wen lost ping to site");
-            this.checkBoxPingGateWay.UseVisualStyleBackColor = true;
-            // 
-            // txbFrequence
-            // 
-            this.txbFrequence.Location = new System.Drawing.Point(87, 54);
-            this.txbFrequence.Name = "txbFrequence";
-            this.txbFrequence.Size = new System.Drawing.Size(36, 20);
-            this.txbFrequence.TabIndex = 3;
-            this.txbFrequence.Text = "1";
-            // 
-            // txbPingSite
-            // 
-            this.txbPingSite.Location = new System.Drawing.Point(87, 25);
-            this.txbPingSite.Name = "txbPingSite";
-            this.txbPingSite.Size = new System.Drawing.Size(120, 20);
-            this.txbPingSite.TabIndex = 2;
-            this.txbPingSite.Text = "ya.ru";
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(21, 28);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(43, 13);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "Ping to:";
             // 
             // label2
             // 
@@ -177,14 +155,21 @@
             this.label2.TabIndex = 1;
             this.label2.Text = "Freq., sec:";
             // 
-            // label1
+            // txbPingSite
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(21, 28);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(43, 13);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Ping to:";
+            this.txbPingSite.Location = new System.Drawing.Point(87, 25);
+            this.txbPingSite.Name = "txbPingSite";
+            this.txbPingSite.Size = new System.Drawing.Size(120, 20);
+            this.txbPingSite.TabIndex = 2;
+            this.txbPingSite.Text = "ya.ru";
+            // 
+            // txbFrequence
+            // 
+            this.txbFrequence.Location = new System.Drawing.Point(87, 54);
+            this.txbFrequence.Name = "txbFrequence";
+            this.txbFrequence.Size = new System.Drawing.Size(36, 20);
+            this.txbFrequence.TabIndex = 3;
+            this.txbFrequence.Text = "1";
             // 
             // btnStart
             // 
@@ -197,6 +182,19 @@
             this.btnStart.Text = "START";
             this.btnStart.UseVisualStyleBackColor = true;
             this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
+            // 
+            // checkBoxPingGateWay
+            // 
+            this.checkBoxPingGateWay.AutoSize = true;
+            this.checkBoxPingGateWay.Checked = true;
+            this.checkBoxPingGateWay.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxPingGateWay.Location = new System.Drawing.Point(23, 87);
+            this.checkBoxPingGateWay.Name = "checkBoxPingGateWay";
+            this.checkBoxPingGateWay.Size = new System.Drawing.Size(94, 17);
+            this.checkBoxPingGateWay.TabIndex = 4;
+            this.checkBoxPingGateWay.Text = "ping GateWay";
+            this.toolTip1.SetToolTip(this.checkBoxPingGateWay, "Check Ping to GateWay wen lost ping to site");
+            this.checkBoxPingGateWay.UseVisualStyleBackColor = true;
             // 
             // toolTip1
             // 
@@ -221,9 +219,9 @@
             this.lblPing.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.lblPing.Location = new System.Drawing.Point(399, 266);
             this.lblPing.Name = "lblPing";
-            this.lblPing.Size = new System.Drawing.Size(49, 20);
+            this.lblPing.Size = new System.Drawing.Size(33, 20);
             this.lblPing.TabIndex = 5;
-            this.lblPing.Text = "none";
+            this.lblPing.Text = "OK";
             this.lblPing.Visible = false;
             // 
             // timerOfPing
@@ -246,12 +244,6 @@
             this.toolStripStatusLabel1.Size = new System.Drawing.Size(39, 17);
             this.toolStripStatusLabel1.Text = "Status";
             // 
-            // notifyIcon1
-            // 
-            this.notifyIcon1.Text = "notifyIcon1";
-            this.notifyIcon1.Visible = true;
-            this.notifyIcon1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon1_MouseClick);
-            // 
             // Form1
             // 
             this.AcceptButton = this.btnStart;
@@ -267,11 +259,9 @@
             this.Controls.Add(this.btnGetStatus);
             this.Controls.Add(this.groupBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "Form1";
-            this.Text = "InternetControll";
-            this.Resize += new System.EventHandler(this.Form1_Resize);
+            this.Text = "Form1";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
@@ -305,7 +295,6 @@
         private System.Windows.Forms.Timer timerOfPing;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
-        private System.Windows.Forms.NotifyIcon notifyIcon1;
     }
 }
 
