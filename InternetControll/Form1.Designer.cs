@@ -117,6 +117,7 @@
             // 
             // btnGetStatus
             // 
+            this.btnGetStatus.Enabled = false;
             this.btnGetStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.btnGetStatus.Location = new System.Drawing.Point(321, 36);
             this.btnGetStatus.Name = "btnGetStatus";
@@ -142,8 +143,7 @@
             // checkBoxPingGateWay
             // 
             this.checkBoxPingGateWay.AutoSize = true;
-            this.checkBoxPingGateWay.Checked = true;
-            this.checkBoxPingGateWay.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxPingGateWay.Enabled = false;
             this.checkBoxPingGateWay.Location = new System.Drawing.Point(23, 87);
             this.checkBoxPingGateWay.Name = "checkBoxPingGateWay";
             this.checkBoxPingGateWay.Size = new System.Drawing.Size(94, 17);
