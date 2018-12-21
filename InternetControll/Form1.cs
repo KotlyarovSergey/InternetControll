@@ -65,21 +65,48 @@ namespace InternetControll
             tryPingCount++;
             toolStripStatusLabel1.Text = "attempts to ping: " + tryPingCount.ToString();
             // try ping site
+            //IPAddress ipSite = 
+            IPHostEntry ipHE = null ;// = Dns.GetHostEntry(txbPingSite.Text.Trim());
+            //bool hostEntryExist = true;
             try
             {
-                pngReply = png.Send(txbPingSite.Text.Trim(),1500);
+                ipHE = Dns.GetHostEntry(txbPingSite.Text.Trim());
+                //pngReply = png.Send(txbPingSite.Text.Trim(),1500);
+                
             }
             catch
             {
-                changePingStatusOK(pingStatus.lost);
-                return;
+                // не удалось разрешить хост
+                // если стоит галка, надо пробовать пингануть шлюз
+                //changePingStatusOK(pingStatus.lost);
+                //return;
+                //hostEntryExist = false;
             }
-            // if ping site success
-            if (pngReply.Status == IPStatus.Success)
+
+            // если хост разрешен, пытаемя пингануть, если нет пингуем шлюз
+            if(ipHE!=null)
             {
-                changePingStatusOK(pingStatus.siteOK);
+                // pngReply = png.Send(ipHE.AddressList[0], 1500);
+                pngReply = png.Send(txbPingSite.Text.Trim(), 1500);
+                // if ping site success
+                if (pngReply.Status == IPStatus.Success)
+                {
+                    changePingStatusOK(pingStatus.siteOK);
+                }
+                else
+                {
+                    pingGate();
+                }
             }
-            else // if ping site lost
+            else // пингуем шлюз
+            {
+
+                pingGate();
+
+            }
+            timerOfPing.Start();
+            return;
+            void pingGate()
             {
                 // if cheked ping gateway
                 if (checkBoxPingGateWay.Checked == true)
@@ -100,12 +127,13 @@ namespace InternetControll
                     {
                         changePingStatusOK(pingStatus.gateWayOK);
                     }
-                }
-                else  // if don't ping gateway
-                {
-                    changePingStatusOK(pingStatus.lost);
+                    else  // if don't ping gateway
+                    {
+                        changePingStatusOK(pingStatus.lost);
+                    }
                 }
             }
+            
         }
 
         private void changePingStatusOK(pingStatus pStat)
@@ -164,6 +192,7 @@ namespace InternetControll
         }
 
 
+        // -------------  TIMER ------------------
         private void timerOfPing_Tick(object sender, EventArgs e)
         {
             timerOfPing.Stop();
