@@ -162,6 +162,7 @@
             this.checkBoxPingGateWay.Text = "ping GateWay";
             this.toolTip1.SetToolTip(this.checkBoxPingGateWay, "Check Ping to GateWay wen lost ping to site");
             this.checkBoxPingGateWay.UseVisualStyleBackColor = true;
+            this.checkBoxPingGateWay.CheckedChanged += new System.EventHandler(this.checkBoxPingGateWay_CheckedChanged);
             // 
             // txbFrequence
             // 
@@ -250,6 +251,7 @@
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(481, 22);
             this.statusStrip1.TabIndex = 6;
+            this.statusStrip1.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.statusStrip1_ItemClicked);
             // 
             // toolStripStatusLabel1
             // 
@@ -259,7 +261,7 @@
             // 
             // notifyIcon1
             // 
-            this.notifyIcon1.Text = "notifyIcon1";
+            this.notifyIcon1.Text = "Ping not run";
             this.notifyIcon1.Visible = true;
             this.notifyIcon1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon1_MouseClick);
             // 

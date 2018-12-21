@@ -20,14 +20,17 @@ namespace InternetControll
         }
         private int tryPingCount = 0;
         private bool isRunning = false;
-        private IPAddress defGateWay;
-        private enum pingStatus
+        private IPAddress defGateWay = null;
+        private enum PingStatus
         {
             siteOK,
             gateWayOK,
-            lost
+            lost,
+            notRun
         };
 
+
+        // ==========================  START click ========================
         private void btnStart_Click(object sender, EventArgs e)
         {
             if (isRunning) // to BREAK
@@ -37,8 +40,7 @@ namespace InternetControll
                 lblPingLabel.Visible = false;
                 lblPing.Visible = false;
                 notifyIcon1.Visible = false;
-                // pinger stop
-                //pinger(false);
+                changePingStatus(PingStatus.notRun);
 
             }
             else // to RUN
@@ -51,6 +53,7 @@ namespace InternetControll
                 pinger();
                 timerOfPing.Start();
                 notifyIcon1.Visible = true;
+
             }
 
             groupBox2.Enabled = !groupBox2.Enabled;
@@ -58,58 +61,53 @@ namespace InternetControll
             isRunning = !isRunning;
         }
 
+        //    ------------------   Pinger  ----------------------------
         private void pinger()
         {
             Ping png = new Ping();
             PingReply pngReply;
             tryPingCount++;
             toolStripStatusLabel1.Text = "attempts to ping: " + tryPingCount.ToString();
-            // try ping site
-            //IPAddress ipSite = 
-            IPHostEntry ipHE = null ;// = Dns.GetHostEntry(txbPingSite.Text.Trim());
-            //bool hostEntryExist = true;
+
+            // try resolve host
+            IPHostEntry ipHE = null;
             try
             {
                 ipHE = Dns.GetHostEntry(txbPingSite.Text.Trim());
-                //pngReply = png.Send(txbPingSite.Text.Trim(),1500);
-                
             }
             catch
             {
-                // не удалось разрешить хост
-                // если стоит галка, надо пробовать пингануть шлюз
-                //changePingStatusOK(pingStatus.lost);
-                //return;
-                //hostEntryExist = false;
+                // can't resolve host
             }
 
-            // если хост разрешен, пытаемя пингануть, если нет пингуем шлюз
-            if(ipHE!=null)
+            // if resolve host, ping them, else ping gateway
+            if (ipHE != null)
             {
                 // pngReply = png.Send(ipHE.AddressList[0], 1500);
                 pngReply = png.Send(txbPingSite.Text.Trim(), 1500);
                 // if ping site success
                 if (pngReply.Status == IPStatus.Success)
                 {
-                    changePingStatusOK(pingStatus.siteOK);
+                    changePingStatus(PingStatus.siteOK);
                 }
-                else
+                else // ping gateway
                 {
-                    pingGate();
+                    lockal_pingGate();
                 }
             }
-            else // пингуем шлюз
+            else // ping gateway
             {
-
-                pingGate();
-
+                lockal_pingGate();
             }
+
             timerOfPing.Start();
             return;
-            void pingGate()
+
+
+            void lockal_pingGate()
             {
-                // if cheked ping gateway
-                if (checkBoxPingGateWay.Checked == true)
+                // if cheked ping gateway and GateWay exist
+                if (checkBoxPingGateWay.Checked == true && defGateWay != null)
                 {
                     // try ping GateWay
                     try
@@ -118,87 +116,88 @@ namespace InternetControll
                     }
                     catch
                     {
-                        changePingStatusOK(pingStatus.lost);
+                        changePingStatus(PingStatus.lost);
                         return;
                     }
 
                     // if ping GateWay success
                     if (pngReply.Status == IPStatus.Success)
                     {
-                        changePingStatusOK(pingStatus.gateWayOK);
+                        changePingStatus(PingStatus.gateWayOK);
                     }
                     else  // if don't ping gateway
                     {
-                        changePingStatusOK(pingStatus.lost);
+                        changePingStatus(PingStatus.lost);
                     }
                 }
+                else  // ping gateWay not checked
+                {
+                    changePingStatus(PingStatus.lost);
+                }
             }
-            
+
         }
 
-        private void changePingStatusOK(pingStatus pStat)
+
+        // -----------------  Change Ping Status -----------------------------
+        private void changePingStatus(PingStatus pStat)
         {
-            switch(pStat)
+            switch (pStat)
             {
-                case pingStatus.siteOK:
+                case PingStatus.siteOK:
                     if (lblPing.Text.CompareTo("OK") != 0) // iw now not OK
                     {
                         lblPing.Text = "OK";
                         lblPing.ForeColor = System.Drawing.Color.Green;
                         notifyIcon1.Icon = Properties.Resources.pingok;
+                        notifyIcon1.Text = "Ping on site: OK";
                     }
                     break;
 
-                case pingStatus.gateWayOK:
-                    if (lblPing.Text.CompareTo("only Gate") != 0) // iw now not OK
+                case PingStatus.gateWayOK:
+                    if (lblPing.Text.CompareTo("Gate") != 0) // iw now not OK
                     {
-                        lblPing.Text = "only Gate";
-                        lblPing.ForeColor = System.Drawing.Color.Yellow;
-                        notifyIcon1.Icon = Properties.Resources.pingok;
+                        lblPing.Text = "Gate";
+                        lblPing.ForeColor = System.Drawing.Color.Orange;
+                        notifyIcon1.Icon = Properties.Resources.pingGate;
+                        notifyIcon1.Text = "Ping on site lost. Ping GateWay: OK.";
                     }
                     break;
 
-                default:
+                case PingStatus.lost:
                     if (lblPing.Text.CompareTo("Lost") != 0) // iw now not OK
                     {
                         lblPing.Text = "Lost";
                         lblPing.ForeColor = System.Drawing.Color.Red;
                         notifyIcon1.Icon = Properties.Resources.pinglost;
+                        notifyIcon1.Text = "Ping on site ang gateway is lost.";
                     }
                     break;
-            }
-        }
 
-        private void changePingStatusOK(bool isOK)
-        {
-            if (isOK) // we need write: OK
-            {
-                if (lblPing.Text.CompareTo("OK") != 0) // iw now not OK
-                {
-                    lblPing.Text = "OK";
-                    lblPing.ForeColor = System.Drawing.Color.Green;
-                    notifyIcon1.Icon = Properties.Resources.pingok;
-                }
-            }
-            else // we need write: lost
-            {
-                if (lblPing.Text.CompareTo("Lost") != 0) // iw now not OK
-                {
-                    lblPing.Text = "Lost";
-                    lblPing.ForeColor = System.Drawing.Color.Red;
-                    notifyIcon1.Icon = Properties.Resources.pinglost;
-                }
+                default:
+                    if (lblPing.Text == "") // iw now not OK
+                    {
+                        lblPing.Text = "";
+                        lblPing.ForeColor = System.Drawing.Color.Black;
+                        notifyIcon1.Icon = Properties.Resources.pingok;
+                        notifyIcon1.Text = "Ping is not run";
+                    }
+                    break;
+
             }
         }
 
 
-        // -------------  TIMER ------------------
+
+        // ========================  TIMER Tick =============================
         private void timerOfPing_Tick(object sender, EventArgs e)
         {
             timerOfPing.Stop();
             pinger();
         }
 
+
+        // =============== Form Resize(minimize) ===============================
         private void Form1_Resize(object sender, EventArgs e)
         {
             if (isRunning && WindowState == FormWindowState.Minimized)
@@ -207,6 +206,8 @@ namespace InternetControll
             }
         }
 
+
+        // ========================= notifyIcon Click =============================
         private void notifyIcon1_MouseClick(object sender, MouseEventArgs e)
         {
             if (WindowState == FormWindowState.Minimized)
@@ -217,12 +218,14 @@ namespace InternetControll
         }
 
 
-        // get IP Config
+        // ==================== Click GetStatus ==============================
         private void btnGetStatus_Click(object sender, EventArgs e)
         {
             getIFStatus();
         }
 
+
+        // ---------------- Get Interfaces & fill Combo --------------------------
         private void getIFStatus()
         {
             // get all IF and fill combo
@@ -247,11 +250,11 @@ namespace InternetControll
         }
 
 
-        // selected InterFace changed
+        // =====================  selected InterFace changed ==========================
         private void cmBoxInterFaces_SelectedIndexChanged(object sender, EventArgs e)
         {
             //lblIP.Text = "IP: "; 
-
+            defGateWay = null;
             foreach (NetworkInterface NI in NetworkInterface.GetAllNetworkInterfaces())
             {
                 foreach (UnicastIPAddressInformation ip in NI.GetIPProperties().UnicastAddresses)
@@ -272,6 +275,8 @@ namespace InternetControll
             }
         }
 
+
+        //---------------- retrieve DNS from InterfaceProperties -----------------
         private string getDNS(IPInterfaceProperties IPIFProp)
         {
             IPAddressCollection IPColl = IPIFProp.DnsAddresses;
@@ -286,10 +291,12 @@ namespace InternetControll
             return "DNS: ";
         }
 
+        
+        //---------------- retrieve GateWay from InterfaceProperties -----------------
         private string getGateWay(IPInterfaceProperties IPIFProp)
         {
             GatewayIPAddressInformationCollection GIPAIC = IPIFProp.GatewayAddresses;
-            foreach  (GatewayIPAddressInformation iP in GIPAIC)
+            foreach (GatewayIPAddressInformation iP in GIPAIC)
             {
                 if (iP.Address.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
                 {
@@ -300,9 +307,36 @@ namespace InternetControll
             return "GateWay:";
         }
 
+
         private void Form1_Load(object sender, EventArgs e)
         {
             getIFStatus();
         }
+
+
+        // ======================= Chek Need Ping GateWay =========================
+        private void checkBoxPingGateWay_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBoxPingGateWay.Checked)
+            {
+                if (defGateWay == null)
+                {
+                    MessageBox.Show("Default GateWay is empty.\r\nYou may need to select a different interface.",
+                        "Caution!",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Asterisk);
+                }
+            }
+        }
+
+
+
+        private void statusStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+
+        }
+
+
+
     }
 }

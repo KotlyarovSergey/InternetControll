@@ -99,6 +99,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="iForm.ico" />
+    <None Include="Properties\i7.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
